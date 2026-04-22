@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 650 200" width="650" height="200">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 200" width="780" height="200">
   <defs>
-    <!-- Shield gradient -->
+    <!-- Shield gradient (unchanged) -->
     <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" style="stop-color:#1B3A5C;stop-opacity:1" />
       <stop offset="100%" style="stop-color:#2A5F8F;stop-opacity:1" />
@@ -14,18 +14,54 @@
       <stop offset="100%" style="stop-color:#3D7AB5;stop-opacity:1" />
     </linearGradient>
 
-    <!-- "SME" letter gradient -->
+    <!-- "SME" letter gradient (stops ordered for the Y-flipped font group: -->
+    <!--  offset 0% lands at bottom of rendered letters, 100% at top) -->
+    <!--  Lightest stop stays saturated blue - not pushed toward white -->
     <linearGradient id="smeGrad" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#3F73AE"/>
       <stop offset="55%" stop-color="#6FA7CF"/>
       <stop offset="100%" stop-color="#A8DDE8"/>
     </linearGradient>
 
-    <!-- "Mart" letter gradient -->
+    <!-- "Mart" letter gradient - lightest stop stays saturated gold -->
     <linearGradient id="martGrad" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#C47424"/>
       <stop offset="55%" stop-color="#DFAA4A"/>
       <stop offset="100%" stop-color="#F2D680"/>
+    </linearGradient>
+
+    <!-- Checkmark gradients: depth-of-field, light source = viewer. -->
+    <linearGradient id="checkLarge" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E3F2B0"/>
+      <stop offset="50%" stop-color="#B5D66A"/>
+      <stop offset="100%" stop-color="#7FB63A"/>
+    </linearGradient>
+    <linearGradient id="checkMid" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#A8C87A"/>
+      <stop offset="50%" stop-color="#82AA44"/>
+      <stop offset="100%" stop-color="#547C1E"/>
+    </linearGradient>
+    <linearGradient id="checkSmall" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6B933A"/>
+      <stop offset="50%" stop-color="#4E7326"/>
+      <stop offset="100%" stop-color="#325216"/>
+    </linearGradient>
+
+    <!-- Depth-of-field filters: subtle, focal plane is FRONT (largest) check. -->
+    <!-- Filter regions widened to 200% so miter-join extension at the V vertex isn't clipped. -->
+    <filter id="blurMid" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="0.3"/>
+    </filter>
+    <filter id="blurBack" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="0.6"/>
+    </filter>
+
+    <!-- Shield-center checkmark gradient: stops swapped so the tail end of the stroke -->
+    <!-- (bottom-right of the path's bbox) gets the lighter green. -->
+    <linearGradient id="shieldCheckGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1A4E18"/>
+      <stop offset="50%" stop-color="#3F8E30"/>
+      <stop offset="100%" stop-color="#7FC462"/>
     </linearGradient>
 
     <!-- Soft light glow behind the shield-center checkmark -->
@@ -40,19 +76,20 @@
     </filter>
   </defs>
 
-  <!-- Shield Icon -->
+  <!-- Shield Icon (unchanged) -->
   <g transform="translate(30, 16)">
     <path d="M70 10 L120 30 L120 90 C120 130 70 160 70 160 C70 160 20 130 20 90 L20 30 Z"
           fill="url(#shieldGrad)" stroke="none"/>
     <path d="M70 22 L110 38 L110 88 C110 120 70 146 70 146 C70 146 30 120 30 88 L30 38 Z"
           fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
-
     <!-- COMPLETE-GRAPH web (K6): every node connected to every other node. -->
+    <!-- Radial connections (central to each surrounding): 5 lines, brighter/thicker. -->
     <line x1="70" y1="75" x2="50" y2="52" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/>
     <line x1="70" y1="75" x2="90" y2="52" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/>
     <line x1="70" y1="75" x2="45" y2="95" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/>
     <line x1="70" y1="75" x2="95" y2="95" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/>
     <line x1="70" y1="75" x2="70" y2="112" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/>
+    <!-- Peer connections: C(5,2) = 10 lines, thinner/dimmer. -->
     <line x1="50" y1="52" x2="90" y2="52" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
     <line x1="50" y1="52" x2="45" y2="95" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
     <line x1="50" y1="52" x2="95" y2="95" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
@@ -64,7 +101,8 @@
     <line x1="45" y1="95" x2="70" y2="112" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
     <line x1="95" y1="95" x2="70" y2="112" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
 
-    <!-- Nodes: white central (for checkmark contrast), orange peers. -->
+    <!-- Nodes drawn AFTER the web lines so they sit on top and cover line endpoints. -->
+    <!-- Central node: white (for checkmark contrast), larger (r=11, was 8). -->
     <circle cx="70" cy="75" r="11" fill="#FFFFFF"/>
     <circle cx="50" cy="52" r="5.5" fill="#E8913A" opacity="0.95"/>
     <circle cx="90" cy="52" r="5.5" fill="#E8913A" opacity="0.95"/>
@@ -72,7 +110,8 @@
     <circle cx="95" cy="95" r="5.5" fill="#E8913A" opacity="0.95"/>
     <circle cx="70" cy="112" r="5.5" fill="#E8913A" opacity="0.95"/>
 
-    <!-- Checkmark on central node -->
+    <!-- Smaller straight checkmark, fitting inside the larger white central node. -->
+    <!-- Solid lightest green + soft light glow halo for prominence. -->
     <path d="M65.5 75.5 L 69 80 L 75 70"
           stroke="#3F8E30" stroke-width="3" fill="none"
           stroke-linecap="square" stroke-linejoin="miter"
@@ -97,6 +136,48 @@
   <!-- Accent underline -->
   <rect x="170" y="120" width="430" height="4" rx="2" fill="url(#accentGrad)"/>
 
-  <!-- Tagline -->
+  <!-- Tagline (still text; tagline typography not critical to identity) -->
   <text x="170" y="148" font-family="'Helvetica Neue', Arial, sans-serif" font-weight="500" font-size="16" fill="#6B7C8E" textLength="430" lengthAdjust="spacing">COMPLIANCE EXPERTS MARKETPLACE</text>
+
+  <!-- Checkmarks: canonical shape = start(0,40) vertex(20,75) tip(80,0), W=80 H=75. -->
+  <!-- Three scales 1.0 / 0.5 / 0.25. Stroke scales linearly: 22 / 11 / 5.5. -->
+  <!-- -->
+  <!-- ALIGNMENT CONSTRAINTS: -->
+  <!-- - stroke-linecap="butt" so tips are flush with endpoints (no extension past tip). -->
+  <!-- - stroke-linejoin="miter" makes a sharp V at the vertex, which miter-extends past -->
+  <!--   the path vertex point along the bisector by ~half_stroke/sin(angle/2). -->
+  <!--   For this V's interior angle (~68 deg), miter extension = half_stroke * 1.78. -->
+  <!--   Large: 11 * 1.78 = 19.6 (extends downward past path vertex). -->
+  <!--   So large PATH vertex sits at y=140 so its miter point lands at y~160 = shield bottom. -->
+  <!-- - Smallest tip at path (100,10) = absolute y=26 = shield top (butt cap, no extension). -->
+  <!-- - All three V-path-vertices are collinear (same vanishing-axis line): -->
+  <!--     (30,140) -> (57.5,84.38) -> (85,28.75), slope -2.023. -->
+  <!-- CHECKMARK GROUP: height matches SME Mart + tagline text block (~92 tall). -->
+  <!-- Mid vertex at t=EXACTLY 2/3 along the vertex axis, which mathematically forces -->
+  <!-- the three TIP endpoints to be collinear as well (one converging VP for both axes). -->
+  <!-- Uniform 0.831x scale of the previous "close" geometry. -->
+  <!-- -->
+  <!-- translate(600, 19): shifts group ~40 units left from previous position, so the -->
+  <!-- visible left edge sits ~20 units right of the text end at x=600, matching the -->
+  <!-- shield-to-text gap. -->
+  <!-- -->
+  <!-- Drawing order: small first (back), mid, large last (front/on top). -->
+  <g id="checkmark-group" transform="translate(600, 19)">
+    <!-- Smallest (back) - subtle blur (furthest from focal plane) -->
+    <path d="M 54.02 49.24 L 58.17 56.51 L 70.64 40.93"
+          stroke="url(#checkSmall)" stroke-width="4.57"
+          fill="none" stroke-linecap="butt" stroke-linejoin="miter"
+          filter="url(#blurBack)"/>
+
+    <!-- Middle - very subtle blur (one step behind focal plane) -->
+    <path d="M 44.32 62.05 L 52.63 76.59 L 77.56 45.43"
+          stroke="url(#checkMid)" stroke-width="9.15"
+          fill="none" stroke-linecap="butt" stroke-linejoin="miter"
+          filter="url(#blurMid)"/>
+
+    <!-- Largest (front) - tip (91.41, 54.43) on tip axis line -->
+    <path d="M 24.93 87.67 L 41.55 116.75 L 91.41 54.43"
+          stroke="url(#checkLarge)" stroke-width="18.3"
+          fill="none" stroke-linecap="butt" stroke-linejoin="miter"/>
+  </g>
 </svg>
